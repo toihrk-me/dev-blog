@@ -1,0 +1,27 @@
+extends layout
+
+block links
+  link(href='/github-markdown.css', rel='stylesheet', type='text/css')
+  link(href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css', rel='stylesheet', type='text/css')
+  link(href='/page.css', rel='stylesheet', type='text/css')
+  link(href='/#{date.year}/#{date.month}/#{date.day}/#{url}.html', rel='canonical')
+
+block scripts
+  script(src='//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js', type='text/javascript')
+
+block body
+  article
+    .publish-date
+      time(datetime='#{date.year}-#{date.month}-#{date.day}', pubdate)
+        span.date-year
+          a(href='/archives/#{date.year}.html') #{date.year}
+          | /
+        span.date-month
+          a(href='/archives/#{date.year}-#{date.month}.html') #{date.month}
+          | /
+        span.date-day #{date.day}
+    .markdown-body!= body
+    .btns
+      a.github-button#issue(href="https://github.com/toihrk-me/dev-blog/issues" data-icon="octicon-issue-opened" data-style="mega" data-count-api="/repos/toihrk-me/dev-blog#open_issues_count" data-count-aria-label="# issues on GitHub" aria-label="Issue toihrk-me/dev-blog on GitHub") Issue
+    script(src="/page.js" type="text/javascript")
+    script(async defer id="github-bjs" src="https://buttons.github.io/buttons.js")
