@@ -22,7 +22,7 @@ block body
           a(href="#{post.url}") #{post.title}
 
     .paging
-      if isLast != undefined && isHead != undefined
+      if ( isLast != undefined && isHead != undefined ) && ( isLast != isHead )
         if isHead
           a(href='/archives/page-#{index+1}.html').paging-prev prev
         else if isLast
