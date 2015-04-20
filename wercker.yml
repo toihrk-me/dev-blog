@@ -20,8 +20,7 @@ deploy:
         code: |
           git config --global user.email "toihrk@me.com"
           git config --global user.name "toihrk-wercker"
-          echo $github_remote
-          git remote set-url origin $github_remote
+          git remote set-url origin git@github.com:toihrk-me/dev-blog.git
     - script:
         name: Deploy to github pages
         code: npm run deploy
