@@ -20,6 +20,7 @@ deploy:
         code: |
           git config --global user.email "toihrk@me.com"
           git config --global user.name "toihrk-wercker"
+          echo $github_remote
           git remote set-url origin $github_remote
     - script:
         name: Deploy to github pages
