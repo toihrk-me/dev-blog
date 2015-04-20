@@ -16,7 +16,7 @@ deploy:
   steps:
     - script:
         name: Configure git
-        hide-from-log: true
+        hide-from-log: false
         code: |
           git config --global user.email "toihrk@me.com"
           git config --global user.name "toihrk-wercker"
