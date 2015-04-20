@@ -16,11 +16,11 @@ deploy:
   steps:
     - script:
         name: Configure git
-        hide-from-log: false
+        hide-from-log: true
         code: |
           git config --global user.email "toihrk@me.com"
           git config --global user.name "toihrk-wercker"
-          git remote set-url origin git@github.com:toihrk-me/dev-blog.git
+          git remote set-url origin $github_remote
     - script:
         name: Deploy to github pages
         code: npm run deploy
