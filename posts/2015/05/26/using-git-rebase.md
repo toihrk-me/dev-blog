@@ -14,9 +14,11 @@ Gitはそこそこ使ってたつもりだったけど、`rebase`はあまり使
 `rebase`は、コミット履歴がわかりやすくなる。
 
 `merge`すると以下のようになるコミット履歴が
+
 ![merge](https://git-scm.com/figures/18333fig0328-tn.png)
 
 `rebase`すると以下のようになる。
+
 ![rebase](https://git-scm.com/figures/18333fig0329-tn.png)
 
 
