@@ -1,0 +1,65 @@
+<!DOCTYPE html><html><head><title>dev.toihrk.me</title><link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet" type="text/css"><link href="/layout.css" rel="stylesheet" type="text/css"><link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png"><link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png"><link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png"><link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png"><link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png"><link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png"><link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png"><link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png"><link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96"><link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16"><link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-TileImage" content="/mstile-144x144.png"><link href="/github-markdown.css" rel="stylesheet" type="text/css"><link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css" rel="stylesheet" type="text/css"><link href="/page.css" rel="stylesheet" type="text/css"><link href="/2015/06/03/difference-of-let-and-let!-in-rspec.html" rel="canonical"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js" type="text/javascript"></script></head><body><header class="pure-u-1-1"><a href="/"><h1>dev.toihrk.me</h1></a></header><div id="articleContainer"><article><div class="publish-date"><time datetime="2015-06-03" pubdate><span class="date-year"><a href="/archives/2015.html">2015</a>/</span><span class="date-month"><a href="/archives/2015-06.html">06</a>/</span><span class="date-day">03</span></time></div><div class="markdown-body"><h1 id="-rspec-let-let-2015-06-03-difference-of-let-and-let-in-rspec-html-"><a href="/2015/06/03/difference-of-let-and-let!-in-rspec.html">RSpecのletとlet!</a></h1>
+<p>RSpecの<code>let</code>は<a href="https://github.com/rspec/rspec-core">rspec/rspec-core</a>の上で<a href="https://github.com/rspec/rspec-core/blob/master/lib/rspec/core/memoized_helpers.rb#L284-L297">lib/rspec/core/memoized_helpers.rb</a>内に定義されている。同様に<code>let!</code>も同ファイルの<a href="https://github.com/rspec/rspec-core/blob/master/lib/rspec/core/memoized_helpers.rb#L352-L355">352行目あたり</a>から定義されている。</p>
+<p>2つのメソッドの違いは、Cucumberのテストの<a href="https://github.com/rspec/rspec-core/blob/master/features/helper_methods/let.feature">features/helper_methods/let.feature</a>が参考になった。</p>
+<blockquote>
+<p>  Use <code>let</code> to define a memoized helper method. The value will be cached across
+  multiple calls in the same example but not across examples.</p>
+<p> Note that <code>let</code> is lazy-evaluated: it is not evaluated until the first time
+  the method it defines is invoked. You can use <code>let!</code> to force the method&#39;s
+  invocation before each example.</p>
+</blockquote>
+<p>英語の理解が乏しいので単語とかを拾って読む。</p>
+<p><code>let</code>はメモ化を行い、同一のテストであれば同じオブジェクトを使い回せ、他のテストではまた評価が行われる。</p>
+<p><code>let</code>は遅延評価される。最初にメソッド呼び出されるまで定義がされない。即座に評価する必要があるならば<code>let!</code>を使う必要がある。</p>
+<p>不安だから調べてみたがだいたいこんな感じっぽい。</p>
+<p><code>memoized_helpers.rb</code>内でコメントアウトされている例を見ると納得する。</p>
+<pre><code class="lang-ruby">class Thing
+  def self.count
+    @count ||= 0
+  end
+
+  def self.count=(val)
+    @count += val
+  end
+
+  def self.reset_count
+    @count = 0
+  end
+
+  def initialize
+    self.class.count += 1
+  end
+end
+
+describe Thing do
+  after(:example) { Thing.reset_count }
+
+  context &quot;using let&quot; do
+    let(:thing) { Thing.new }
+
+    it &quot;is not invoked implicitly&quot; do
+      Thing.count.should eq(0)
+    end
+
+    it &quot;can be invoked explicitly&quot; do
+      thing
+      Thing.count.should eq(1)
+    end
+  end
+
+  context &quot;using let!&quot; do
+    let!(:thing) { Thing.new }
+
+    it &quot;is invoked implicitly&quot; do
+      Thing.count.should eq(1)
+    end
+
+    it &quot;returns memoized version on first invocation&quot; do
+      thing
+      Thing.count.should eq(1)
+    end
+  end
+end
+</code></pre>
+<p><code>let</code>であると遅延評価されるため呼び出しがないとクラスメソッドの<code>count</code>は<code>0</code>のままだが、<code>let!</code>を使うと即座に評価されるため<code>count</code>は<code>1</code>になる。</p>
+</div><div class="btns"><a id="issue" href="https://github.com/toihrk-me/dev-blog/issues" data-icon="octicon-issue-opened" data-style="mega" data-count-api="/repos/toihrk-me/dev-blog#open_issues_count" data-count-aria-label="# issues on GitHub" aria-label="Issue toihrk-me/dev-blog on GitHub" class="github-button">Issue</a></div><script src="/page.js" type="text/javascript"></script></article></div><footer class="pure-u-1-1"><ul><li><a href="https://github.com/toihrk-me/dev-blog" data-icon="octicon-eye" data-count-href="/toihrk-me/dev-blog/watchers" data-count-api="/repos/toihrk-me/dev-blog#subscribers_count" data-count-aria-label="# watchers on GitHub" aria-label="Watch toihrk-me/dev-blog on GitHub" class="github-button">Watch</a></li><li><a href="https://github.com/toihrk-me/dev-blog" data-icon="octicon-star" data-count-href="/toihrk-me/dev-blog/stargazers" data-count-api="/repos/toihrk-me/dev-blog#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star toihrk-me/dev-blog on GitHub" class="github-button">Star</a></li><li><a href="https://github.com/toihrk" aria-label="Follow @toihrk on GitHub" class="github-button">Follow @toihrk</a></li></ul><ul><li><a href="/archives" class="button">Archives</a></li><li><a href="http://toihrk.me" class="button">About me</a></li><li><span id="copyright">&copy; 2015 toihrk. All rights reserved.</span></li></ul><script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script></footer></body></html>
