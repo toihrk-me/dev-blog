@@ -330,6 +330,8 @@ Railsのscaffoldっぽい。
 
 ## 所感
 
+成果 : [toihrk/hello_phoenix](https://github.com/toihrk/hello_phoenix)
+
 - Railsより良さそう
 - Twitter Bootstrapが初期状態から組み込まれていて良さそう
 - ERBっぽいPhoenixHTMLだけれど調べてみたらhamlみたいなテンプレートエンジンみたいなのもあって良さそう
