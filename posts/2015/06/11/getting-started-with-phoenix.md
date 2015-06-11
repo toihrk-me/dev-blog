@@ -1,4 +1,4 @@
-# [Phoenixを触ってみる](/2015/06/11/getting-started-with-pheonix.html)
+# [Phoenixを触ってみる](/2015/06/11/getting-started-with-phoenix.html)
 
 Elixirに入門してみたくて、とりあえず文法とか眺めてると眠くなってしまうのでWebフレームワークのPhoenixを触ってみる。
 
