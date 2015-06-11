@@ -27,7 +27,7 @@ exports.paths = paths =
 gulp.task 'archive', (callback)-> run 'archive-json', 'archive-page', 'archive-head', callback
 gulp.task 'default', ['article', 'indexpage', 'archive', 'rss', 'CNAME', 'gfm', 'favicon', 'stylus', 'coffee']
 gulp.task 'watch', ['default'], ->
-  gulp.watch paths.posts, ['article', 'index']
+  gulp.watch paths.posts, ['article', 'indexpage']
   gulp.watch paths.styl, ['stylus']
   connect.server
     root: paths.dest
