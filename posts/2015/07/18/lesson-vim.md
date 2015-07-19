@@ -188,5 +188,11 @@ inoremap <expr><C-e>  neocomplcache#cancel_popup()
 
 ## 最終的なvimrc
 
-`<script src="https://gist.github.com/toihrk/65cd4cbfa691b06b578e.js"></script>`
+[https://gist.github.com/65cd4cbfa691b06b578e.git](https://gist.github.com/65cd4cbfa691b06b578e.git)
+
+ちょこちょこエラーを直していこうと思ってる。
+
+整理してちゃんと管理してるリポジトリにも早く加えたい。
+
+[toihrk/dotfiles](https://github.com/toihrk/dotfiles)
 
